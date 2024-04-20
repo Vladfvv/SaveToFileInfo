@@ -6,7 +6,91 @@
         xmlns:local="clr-namespace:SaveToFileInfo"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
+
+    <Window.Resources>
+        <Style TargetType="TextBox">
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="True">
+                    <Setter Property="ToolTip"
+              Value="{Binding RelativeSource={RelativeSource Self},
+                  Path=(Validation.Errors)[0].ErrorContent}" />
+                    <Setter Property="Foreground" Value="Red" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        <ControlTemplate x:Key="ErrorTempl">
+            <StackPanel Orientation="Horizontal">
+                <Border BorderThickness="2" BorderBrush="Green">
+                    <AdornedElementPlaceholder></AdornedElementPlaceholder>
+                </Border>
+                <TextBlock Foreground="Red" FontSize="18" FontWeight="Bold">!</TextBlock>
+            </StackPanel>
+        </ControlTemplate>
+    </Window.Resources>
+
+
+
+
+
+
+    <Grid x:Name="Grid" Background="Aqua">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="0.3*"/>
+                <RowDefinition Height="0.3*"/>
+                <RowDefinition Height="0.3*"/>
+                <RowDefinition Height="0.3*"/>
+                <RowDefinition Height="0.3*"/>
+                <RowDefinition Height="0.3*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.3*"/>
+                <ColumnDefinition  Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Label x:Name="SurnameLabel" Content="Фамилия" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0 0 10 0"/>
+            <Label x:Name="SalaryLabel" Content="Зарплата" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0 0 10 0"/>
+            <Label x:Name="PositionLabel" Content="Должность" Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0 0 10 0"/>
+            <Label x:Name="CityLabel" Content="Город" Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0 0 10 0"/>
+            <Label x:Name="StreetLabel" Content="Улица" Grid.Row="4" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0 0 10 0"/>
+            <Label x:Name="HouseLabel" Content="Дом" Grid.Row="5" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0 0 10 0"/>
+
+            <TextBox x:Name="surname" Text="{Binding Path=surname,
+            ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"                 
+                 Width="80" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left"></TextBox>
+            <TextBox x:Name="salary" Text="{Binding Path=salary,
+            ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}" 
+                 Width="80" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left"></TextBox>
+            <TextBox x:Name="position" Text="{Binding Path=position,
+            ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}" 
+                Width="80" Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left"></TextBox>
+            <TextBox x:Name="city" Text="{Binding Path=city,
+            ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}" 
+                Width="80" Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left"></TextBox>
+
+
+            <TextBox x:Name="street" Text="{Binding Path=street,
+            ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}" 
+             Width="80" Grid.Row="4" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left"></TextBox>
+
+            <TextBox x:Name="HouseTextBox" Text="{Binding Path=house,
+            ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}" 
+             Width="80" Grid.Row="5" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left"></TextBox>
+
+            <Button x:Name="sendButton" Content="Send" Width="80" Height="40" Grid.Row="6" Grid.ColumnSpan="2" FontSize="16" Margin="100 20 0 0" VerticalAlignment="Top" HorizontalAlignment="Left" Click="sendButton_Click"/>
+
+
+        </Grid>
+        <GridSplitter Grid.Column="1" Width="5" HorizontalAlignment="Center"
+               VerticalAlignment="Stretch" Background="GreenYellow" />
+
+        <ListBox Grid.Column="2" Name="lResults" ItemsSource="{Binding}" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20" Height="400" Width="300"></ListBox>
+
 
     </Grid>
 </Window>
