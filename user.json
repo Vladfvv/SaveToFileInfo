@@ -1,1 +1,42 @@
-{"surname":"\u0446\u0446\u0446","salary":"\u0446\u0446\u0446","position":"\u0414\u0438\u0440\u0435\u043A\u0442\u043E\u0440","city":"\u041C\u0438\u043D\u0441\u043A","street":"\u041C\u043E\u0441\u043A\u043E\u0432\u0441\u043A\u0430\u044F","house":"\u0446\u0446\u0446"}
+[
+  {
+    "surname": "1",
+    "salary": "1",
+    "position": "1",
+    "city": "1",
+    "street": "1",
+    "house": "1"
+  },
+  {
+    "surname": "2",
+    "salary": "2",
+    "position": "2",
+    "city": "\u041C\u0438\u043D\u0441\u043A",
+    "street": "2",
+    "house": "2"
+  },
+  {
+    "surname": "1",
+    "salary": "1",
+    "position": "1",
+    "city": "1",
+    "street": "1",
+    "house": "1"
+  },
+  {
+    "surname": "2",
+    "salary": "2",
+    "position": "2",
+    "city": "\u041C\u0438\u043D\u0441\u043A",
+    "street": "2",
+    "house": "2"
+  },
+  {
+    "surname": "3",
+    "salary": "3",
+    "position": "3",
+    "city": "3",
+    "street": "3",
+    "house": "3"
+  }
+]
