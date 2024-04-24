@@ -126,6 +126,15 @@ namespace SaveToFileInfo
                 string house = employee.house.ToString();
                 results.Add(surname + "\t" + salary + "\t" + position + "\t" + city + "\t" + street + "\t" + house);
                 listSerializable2.Add(new Employee(surname, salary, position, city, street, house));
+
+                employee.surname = string.Empty;
+                employee.position = string.Empty;
+                employee.salary = string.Empty;
+                employee.city = string.Empty;
+                employee.street = string.Empty;
+                employee.house = string.Empty;
+
+
             }
             catch (Exception ex)
             {
@@ -142,10 +151,7 @@ namespace SaveToFileInfo
 
             // Метод для сохранения списка объектов в файл JSON
             public static void SaveToJson(List<Employee> list, string path)
-            {
-                //string json = JsonConvert.SerializeObject(list, Formatting.Indented);
-                //File.AppendAllTextAsync(filePath, json);
-                //File.WriteAllText(filePath, json);
+            {               
                 try
                 {
                     var options = new JsonSerializerOptions
@@ -153,8 +159,7 @@ namespace SaveToFileInfo
                         WriteIndented = true // Добавляем отступы для удобочитаемости
                     };
 
-                    string json = JsonSerializer.Serialize(list, options);
-                    //string jsonString = JsonSerializer.Serialize(yourObjects, Formatting.Indented);
+                    string json = JsonSerializer.Serialize(list, options);                   
                     File.AppendAllTextAsync(path, json);
                 }
                 catch (Exception ex)
@@ -179,27 +184,11 @@ namespace SaveToFileInfo
                     return null;
                 }
             }
-
-
             public static void ClearJsonFile(string filePath)
             {
                 File.WriteAllText(filePath, string.Empty);
             }
-
-
         }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -208,24 +197,7 @@ namespace SaveToFileInfo
         private void saveToFileButton_Click(object sender, RoutedEventArgs e)
         {
             try
-            {/*
-                string surname = employee.surname.ToString();
-                string salary = employee.salary.ToString();
-                string position = employee.position.ToString();
-                string city = employee.city.ToString();
-                string street = employee.street.ToString();
-                string house = employee.house.ToString();
-                Employee employee1 = new Employee(surname, salary, position, city, street, house);*/
-                /* for (int i = 0; i < lResults.Items.Count; i++)
-                 {
-                     resultsSerializable.Add(lResults.Items[i].ToString());
-                    // listSerializable2.Add(new Employee(resultsSerializable[i].ToString()));                       
-                 }*/
-
-
-                // string json = JsonSerializer.Serialize(resultsSerializable, new JsonSerializerOptions { WriteIndented = true });
-
-
+            {
                 if (listSerializable2.Count > 0)//если список в Listbox не пуст
                 {
                     List<Employee> employeeFromList = JsonSerializationCustomClass.LoadFromJson(path);//читаем из json-файла
@@ -250,187 +222,31 @@ namespace SaveToFileInfo
                         JsonSerializationCustomClass.SaveToJson(listSerializable2.ToList(), path);// Сохраняем список объектов в файл
                     }
 
-
-
-
-
-                    // Создаем список объектов Person и добавляем в него элементы из ListBox
-                    //List<Employee> em = new List<Employee>();
-                    // foreach (Employee person in listSerializable2)
-                    // {
-                    //    em.Add(person);
-                    //}
-
-                    // Путь к файлу, в который нужно сохранить список
-                    //string filePath = "people.json";
-
-                    // Сохраняем список в файл
-                    // SaveListToFile(em, path);
-
                     MessageBox.Show("Список объектов успешно сохранен в файл JSON.", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
                 else
                 {
                     MessageBox.Show("Список пуст.", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Warning);
                 }
-
-
-
-
-                /*
-
-                var json = JsonConvert.SerializeObject(resultsSerializable);                
-                File.AppendAllTextAsync(path, json);
-
-                Console.WriteLine($"Объекты успешно сохранены в файл {path}");
-                */
-                /*
-                using (FileStream fs = new FileStream(path, FileMode.OpenOrCreate))
-                {
-                    JsonSerializer.SerializeAsync<Employee>(fs, employee1);
-                    MessageBox.Show("Data has been saved to file");
-                } */                              /*
-
-                string path = "D:\\Vlad\\СВПП\\20240413\\SaveToFileInfo\\myText.txt";
-                string text = "This is ny text";
-                using (StreamWriter writer = new StreamWriter(path, true))
-                { 
-                    writer.WriteAsync(text); 
-                }*/
-
-
-
-                // Проверяем, что ListBox содержит элементы
-
-
-
-
-
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
         }
-
-
-
-
 
 
 
 
         private async void readButton_Click(object sender, RoutedEventArgs e)
         {
-
-            // List<Employee> newList;
-            try
-            { }
-
-
-
-            /*
-
-
-
-            var json = File.ReadAllTextAsync(path);
-            //List<Employee> list = JsonConvert.DeserializeObject<Employee>(value: await json);
-            List<Employee> list = new List<Employee>();
-            list = JsonConvert.DeserializeObject<List<Employee>>(json.Result);
-            lResults.ItemsSource = list.ToArray();
-            //lResults.DataContext.ToString() = list;
-            // List<Employee> yourList = DeserializeListFromFile<string>(path);
-            /* while (json != null)
-             {
-                // listSerializable3.Add(JsonSerializer.DeserializeAsync<Employee>(json));
-
-             }
-             //var data = JsonConvert.DeserializeObject<Employee>(await json);
-             MessageBox.Show(listSerializable3.ToString());
-             MessageBox.Show("Data has been read from file");
-            while (listSerializable3 != null)
-             {
-                 lResults.Items.Add(listSerializable3);
-                 results.Add(listSerializable3.ToString());
-                 //data = JsonConvert.DeserializeObject<Employee>(await json);
-
-             }
-         }
-
-
-         /*
-
-
-             using (FileStream fs = new FileStream(path, FileMode.OpenOrCreate))
-             {
-
-                 Employee employee = await JsonSerializer.DeserializeAsync<Employee>(fs);
-                 Console.WriteLine(employee.surname, employee.salary, employee.position, employee.city, employee.street, employee.house);
-                 resultsSerializable.Add(employee.surname + "\t" + employee.salary + "\t" + employee.position + "\t" + employee.city + "\t" + employee.street + "\t" + employee.house);
-                 lResults.DataContext = resultsSerializable;
-
-                 ReadAndDeserialize("D:\\Vlad\\СВПП\\20240413\\SaveToFileInfo\\user.json");
-
-
-
-
-
-             }
-         }
-         /* 
-          string path = "D:\\Vlad\\СВПП\\20240413\\SaveToFileInfo\\myText.txt";
-          using (StreamReader reader = new StreamReader(path)) 
-          {
-              string text = reader.ReadToEnd();
-              Console.WriteLine(text);
-              results.Add(text);
-
-
-             try
-{
- List<T> list = JsonConvert.DeserializeObject<List<T>>(json);
-}
-catch (JsonSerializationException ex)
-{
- Console.WriteLine("Ошибка десериализации: " + ex.Message);
-}
-
-
-
-
-        }
-        catch (JsonSerializationException ex)
-        {
-            Console.WriteLine("Ошибка десериализации: " + ex.Message);
-        }
-
-*/
-
-
+            try { }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
         }
 
-
-
-        /*
-
-
-        // Метод для десериализации списка из файла JSON
-        public static List<T> DeserializeListFromFile<T>(string filePath)
-        {
-            // Считываем текст из файла
-            string json = File.ReadAllText(filePath);
-
-            // Десериализуем JSON в список указанного типа
-            List<T> list = JsonConvert.DeserializeObject<List<T>>(json);
-
-            return list;
-        }
-
-        */
 
 
         public List<Employee> ReadAndDeserialize(string path)
