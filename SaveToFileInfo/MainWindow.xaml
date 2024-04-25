@@ -16,6 +16,7 @@
                   Path=(Validation.Errors)[0].ErrorContent}" />
                     <Setter Property="Foreground" Value="Red" />
                 </Trigger>
+                
             </Style.Triggers>
         </Style>
         <ControlTemplate x:Key="ErrorTempl">
@@ -29,10 +30,6 @@
     </Window.Resources>
 
 
-
-
-
-
     <Grid x:Name="Grid" Background="Aqua">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
@@ -41,6 +38,8 @@
         </Grid.ColumnDefinitions>
         <Grid Grid.Column="0">
             <Grid.RowDefinitions>
+                <RowDefinition Height="0.3*"/>
+                <RowDefinition Height="0.3*"/>
                 <RowDefinition Height="0.3*"/>
                 <RowDefinition Height="0.3*"/>
                 <RowDefinition Height="0.3*"/>
@@ -62,41 +61,51 @@
             <Label x:Name="StreetLabel" Content="Улица" Grid.Row="4" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0 0 10 0"/>
             <Label x:Name="HouseLabel" Content="Дом" Grid.Row="5" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0 0 10 0"/>
 
-            <TextBox x:Name="surname" Text="{Binding Path=surname,
-            ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"                 
+
+
+            <TextBox x:Name="surnameTextBox" Text="{Binding Path=Surname,
+            ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Validation.ErrorTemplate="{StaticResource ErrorTempl}"                 
                  Width="80" Height="21" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left"></TextBox>
-            <TextBox x:Name="salary" Text="{Binding Path=salary,
-            ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}" 
+            <TextBox x:Name="salaryTextBox" Text="{Binding Path=Salary,
+            ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Validation.ErrorTemplate="{StaticResource ErrorTempl}"
                  Width="80" Height="21" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left"></TextBox>
 
-            <ComboBox x:Name="positionCombobox" Text="{Binding Path=position,
-            ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}"  Grid.Row="2" Grid.Column="1" 
+            <ComboBox x:Name="positionCombobox" Text="{Binding Path=Position,
+            ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Validation.ErrorTemplate="{StaticResource ErrorTempl}"  Grid.Row="2" Grid.Column="1" 
                 Width="80" VerticalAlignment="Center" HorizontalAlignment="Left" IsEditable="True">
             </ComboBox>
 
 
-            <ComboBox x:Name="cityCombobox" Text="{Binding Path=city,
-            ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}" 
+            <ComboBox x:Name="cityCombobox" Text="{Binding Path=City,
+            ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Validation.ErrorTemplate="{StaticResource ErrorTempl}"
                 Width="80" Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" IsEditable="True">
             </ComboBox>
 
 
-            <ComboBox x:Name="streetСomboBox" Text="{Binding Path=street,
-            ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}" 
+            <ComboBox x:Name="streetСomboBox" Text="{Binding Path=Street,
+            ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Validation.ErrorTemplate="{StaticResource ErrorTempl}"
              Width="80" Grid.Row="4" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" IsEditable="True"></ComboBox>
 
-            <TextBox x:Name="HouseTextBox" Text="{Binding Path=house,
-            ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged}" 
+            <TextBox x:Name="houseTextBox" Text="{Binding Path=House,
+            ValidatesOnExceptions=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Validation.ErrorTemplate="{StaticResource ErrorTempl}"
              Width="80" Height="21" Grid.Row="5" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left"></TextBox>
-            
+
             <StackPanel x:Name="sendAndSaveStackPanel"  Orientation="Horizontal" Grid.Row="6"  Grid.ColumnSpan="2">
-                <Button x:Name="sendButton" Content="Send" Width="80" Height="30"  FontSize="14" Margin="100 0 0 0" VerticalAlignment="Center" HorizontalAlignment="Left" Click="sendButton_Click"/>
-                <Button x:Name= "saveToListButton" Content="SaveToList" Width="100" Height="30" FontSize="14" Margin="20 0 0 0" VerticalAlignment="Center" HorizontalAlignment="Left" Click="saveToListButton_Click"/>
+                <Button x:Name="sendButton" Content="SendToList" Width="80" Height="30"  FontSize="14" Margin="100 0 0 0" VerticalAlignment="Center" HorizontalAlignment="Left" Click="sendButton_Click"/>
+                
             </StackPanel>
-            
+
             <StackPanel x:Name="saveAndReadStackPanel"  Orientation="Horizontal" Grid.Row="7"  Grid.ColumnSpan="2">
                 <Button x:Name="saveButton" Content="SaveToFile" Width="80" Height="30"  FontSize="14" Margin="100 0 0 0" VerticalAlignment="Center" HorizontalAlignment="Left" Click="saveToFileButton_Click"/>
                 <Button x:Name="ReadFromFileButton" Content="ReadFromFile" Width="100" Height="30" FontSize="14" Margin="20 0 0 0" VerticalAlignment="Center" HorizontalAlignment="Left" Click="readButton_Click"/>
+            </StackPanel>
+            <StackPanel x:Name="deleteStackPanel"  Orientation="Horizontal" Grid.Row="8"  Grid.ColumnSpan="2">
+                <Button x:Name="clearFormButton" Content="Clear Form" Width="80" Height="30"  FontSize="14" Margin="100 0 0 0" VerticalAlignment="Center" HorizontalAlignment="Left" Click="clearFormButton_Click"/>
+                <Button x:Name="clearListBoxButton" Content="Clear List" Width="100" Height="30" FontSize="14" Margin="20 0 0 0" VerticalAlignment="Center" HorizontalAlignment="Left" Click="clearListBoxButton_Click"/>
+            </StackPanel>
+            <StackPanel x:Name="clearFileStackPanel"  Orientation="Horizontal" Grid.Row="9"  Grid.ColumnSpan="2">
+                <Button x:Name="clearFileButton" Content="Clear File" Width="80" Height="30"  FontSize="14" Margin="100 0 0 0" VerticalAlignment="Center" HorizontalAlignment="Left" Click="clearFileButton_Click"/>
+               
             </StackPanel>
 
         </Grid>

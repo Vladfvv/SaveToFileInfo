@@ -22,6 +22,8 @@ using System.Net.Http.Json;
 using System.Collections.Generic;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 
 
@@ -51,7 +53,6 @@ namespace SaveToFileInfo
     public partial class MainWindow : Window
     {
         ObservableCollection<String> results;
-        ObservableCollection<String> resultsSerializable;
         ObservableCollection<Employee> listSerializable2;
         ObservableCollection<Employee> listSerializable3;
         ObservableCollection<String> positions;
@@ -60,20 +61,84 @@ namespace SaveToFileInfo
         List<Employee> employeesList;
         string path = "D:\\Vlad\\СВПП\\20240413\\SaveToFileInfo\\user.json";
 
-        public class Employee
+        public class Employee : INotifyPropertyChanged
         {
 
-            public string surname { get; set; }
+            public string surname;
 
-            public string salary { get; set; }
+            public string salary;
 
-            public string position { get; set; }
+            public string position;
 
-            public string city { get; set; }
+            public string city;
 
-            public string street { get; set; }
+            public string street;
 
-            public string house { get; set; }
+            public string house;
+
+
+            public string Surname
+            {
+                get { return surname; }
+                set
+                {
+                    surname = value;
+                    OnPropertyChanged("Surname");
+                }
+            }
+            public string Salary
+            {
+                get { return salary; }
+                set
+                {
+                    salary = value;
+                    OnPropertyChanged("Salary");
+                }
+            }
+            public string Position
+            {
+                get { return position; }
+                set
+                {
+                    position = value;
+                    OnPropertyChanged("Position");
+                }
+            }
+            public string City
+            {
+                get { return city; }
+                set
+                {
+                    city = value;
+                    OnPropertyChanged("City");
+                }
+            }
+            public string Street
+            {
+                get { return street; }
+                set
+                {
+                    street = value;
+                    OnPropertyChanged("Street");
+                }
+            }
+            public string House
+            {
+                get { return house; }
+                set
+                {
+                    house = value;
+                    OnPropertyChanged("House");
+                }
+            }
+
+            public event PropertyChangedEventHandler PropertyChanged;
+            public void OnPropertyChanged([CallerMemberName] string prop = "")
+            {
+                if (PropertyChanged != null)
+                    PropertyChanged(this, new PropertyChangedEventArgs(prop));
+            }
+
 
             public Employee() { }
 
@@ -108,9 +173,7 @@ namespace SaveToFileInfo
             cityCombobox.ItemsSource = cities;
             streets = new ObservableCollection<string> { "Центральная", "Московская", "Минская", "Независимости" };
             streetСomboBox.ItemsSource = streets;
-            resultsSerializable = new ObservableCollection<string>();
             listSerializable2 = new ObservableCollection<Employee>();
-            listSerializable3 = new ObservableCollection<Employee>();
 
         }
 
@@ -118,23 +181,8 @@ namespace SaveToFileInfo
         {
             try
             {
-                string surname = employee.surname.ToString();
-                string salary = employee.salary.ToString();
-                string position = employee.position.ToString();
-                string city = employee.city.ToString();
-                string street = employee.street.ToString();
-                string house = employee.house.ToString();
-                results.Add(surname + "\t" + salary + "\t" + position + "\t" + city + "\t" + street + "\t" + house);
-                listSerializable2.Add(new Employee(surname, salary, position, city, street, house));
-
-                employee.surname = string.Empty;
-                employee.position = string.Empty;
-                employee.salary = string.Empty;
-                employee.city = string.Empty;
-                employee.street = string.Empty;
-                employee.house = string.Empty;
-
-
+                results.Add(employee.surname + "\t" + employee.salary + "\t" + employee.position + "\t" + employee.city + "\t" + employee.street + "\t" + employee.house);
+                listSerializable2.Add(employee);
             }
             catch (Exception ex)
             {
@@ -151,7 +199,7 @@ namespace SaveToFileInfo
 
             // Метод для сохранения списка объектов в файл JSON
             public static void SaveToJson(List<Employee> list, string path)
-            {               
+            {
                 try
                 {
                     var options = new JsonSerializerOptions
@@ -159,7 +207,7 @@ namespace SaveToFileInfo
                         WriteIndented = true // Добавляем отступы для удобочитаемости
                     };
 
-                    string json = JsonSerializer.Serialize(list, options);                   
+                    string json = JsonSerializer.Serialize(list, options);
                     File.AppendAllTextAsync(path, json);
                 }
                 catch (Exception ex)
@@ -167,8 +215,6 @@ namespace SaveToFileInfo
                     MessageBox.Show("Ошибка при сохранении файла JSON: " + ex.Message);
                 }
             }
-
-
 
 
             public static List<Employee> LoadFromJson(string path)
@@ -226,7 +272,7 @@ namespace SaveToFileInfo
                 }
                 else
                 {
-                    MessageBox.Show("Список пуст.", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    MessageBox.Show("Список пуст. Добавьте в список", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Warning);
                 }
             }
             catch (Exception ex)
@@ -236,41 +282,74 @@ namespace SaveToFileInfo
         }
 
 
-
-
-        private async void readButton_Click(object sender, RoutedEventArgs e)
+        private void readButton_Click(object sender, RoutedEventArgs e)
         {
-            try { }
+            try
+            {
+                List<Employee> employeeFromList = JsonSerializationCustomClass.LoadFromJson(path);//читаем из json-файла
+
+                if (employeeFromList.Count > 0)//если в json файле есть объекты
+                {
+                    foreach (Employee person in employeeFromList)//проходим по объектам listBox-a  и добавляем его в список для последующей сериализации
+                    {
+                        listSerializable2.Add(person);//добавляем каждый объект
+                        results.Add(employee.surname + "\t" + employee.salary + "\t" + employee.position + "\t" + employee.city + "\t" + employee.street + "\t" + employee.house);
+                    }
+                    MessageBox.Show("Список объектов успешно прочитан из файла JSON.", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                
+                }
+                else
+                {
+                    MessageBox.Show("Файл пуст.", "Предупреждение", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+            }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
         }
+        /*
+                public List<Employee> ReadAndDeserialize(string path)
+                {
+                    var serializer = new XmlSerializer(typeof(List<Employee>));
+                    using (var reader = new StreamReader(path))
+                    {
+                        return (List<Employee>)serializer.Deserialize(reader);
+                    }
+                }
 
 
+                public void SerializeAndSave(string path, List<Employee> data)
+                {
+                    var serializer = new XmlSerializer(typeof(List<Employee>));
+                    using (var em = new StreamWriter(path))
+                    {
+                        serializer.Serialize(em, data);
+                    }
+                }
+        */
 
-        public List<Employee> ReadAndDeserialize(string path)
+
+        private void clearFormButton_Click(object sender, RoutedEventArgs e)
         {
-            var serializer = new XmlSerializer(typeof(List<Employee>));
-            using (var reader = new StreamReader(path))
-            {
-                return (List<Employee>)serializer.Deserialize(reader);
-            }
+            surnameTextBox.Text = string.Empty;
+            salaryTextBox.Text = string.Empty;
+            positionCombobox.Text = string.Empty;
+            cityCombobox.Text = string.Empty;
+            streetСomboBox.Text = string.Empty;
+            houseTextBox.Text = string.Empty;
         }
 
-
-        public void SerializeAndSave(string path, List<Employee> data)
+        private void clearListBoxButton_Click(object sender, RoutedEventArgs e)
         {
-            var serializer = new XmlSerializer(typeof(List<Employee>));
-            using (var em = new StreamWriter(path))
-            {
-                serializer.Serialize(em, data);
-            }
+            results.Clear();
         }
 
-        private void saveToListButton_Click(object sender, RoutedEventArgs e)
+        private void clearFileButton_Click(object sender, RoutedEventArgs e)
         {
-
+            File.WriteAllText(path, "");
+            MessageBox.Show("Файл очищен.", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
         }
     }
 }
